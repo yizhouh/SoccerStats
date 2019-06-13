@@ -32,9 +32,9 @@ namespace SoccerStats
             }
         }
 
-        public static List<string[]> ReadSoccerResults(string fileName)
+        public static List<GameResult> ReadSoccerResults(string fileName)
         {
-            List<string[]> soccerResults = new List<string[]>();
+            List<GameResult> soccerResults = new List<GameResult>();
             string line = "";
             
             using(var reader = new StreamReader(fileName))
@@ -44,12 +44,52 @@ namespace SoccerStats
                 {
                     var gameResult = new GameResult();
                     string[] values = line.Split(',');
+
+                    //prase game date, team name,HomeOrAway, Goals, GoalAttempts, ShotsOnGoal, ShotsOffGoal, PosessionPercent
                     DateTime gameDate;
                     if(DateTime.TryParse(values[0], out gameDate))
                     {
                         gameResult.GameDate = gameDate;
                     }
-                    soccerResults.Add(values);
+
+                    gameResult.TeamName = values[1];
+
+                    HomeOrAway homeOrAway;
+                    if(Enum.TryParse(values[2], out homeOrAway))
+                    {
+                        gameResult.HomeOrAway = homeOrAway;
+                    }
+
+                    int parseInt;
+                    if(int.TryParse(values[3], out parseInt))
+                    {
+                        gameResult.Goals = parseInt;
+                    }
+
+                    if (int.TryParse(values[4], out parseInt))
+                    {
+                        gameResult.GoalAttempts = parseInt;
+                    }
+
+                    if (int.TryParse(values[5], out parseInt))
+                    {
+                        gameResult.ShotOnGoal = parseInt;
+                    }
+
+                    if (int.TryParse(values[6], out parseInt))
+                    {
+                        gameResult.ShotOffGoal = parseInt;
+                    }
+
+                    double possessionPercent;
+                    if(double.TryParse(values[7], out possessionPercent))
+                    {
+                        gameResult.PosessionPercent = possessionPercent;
+                    }
+
+
+
+                    soccerResults.Add(gameResult);
                 }
             }
             return soccerResults;
