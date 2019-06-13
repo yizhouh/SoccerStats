@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace SoccerStats
 {
@@ -21,7 +22,18 @@ namespace SoccerStats
             {
                 Console.WriteLine("No file exists");
             }
+            //read and deserialize player.json
+            fileName = Path.Combine(directory.FullName, "players.json");
+            var players = DeserializePlayers(fileName);
+            var topTen = GetTopTenPlayers(players);
+            foreach(var player in topTen)
+            {
+                Console.WriteLine("Name: " + player.FirstName + "PPG：" + player.PointsPerGame);
+            }
 
+            //write/serialize topten players to json file
+            fileName = Path.Combine(directory.FullName, "topten.json");
+            SerializePlayerToFile(topTen, fileName);
         }
 
         public static string ReadFile(string fileName)
@@ -94,5 +106,48 @@ namespace SoccerStats
             }
             return soccerResults;
         }
+
+        public static List<Player> DeserializePlayers(string fileName)
+        {
+            var players = new List<Player>();
+            var serializer = new JsonSerializer();
+            using(var reader = new StreamReader(fileName))
+            using(var jsonReader = new JsonTextReader(reader))
+            {
+                players = serializer.Deserialize<List<Player>>(jsonReader);
+            }
+            return players;
+        }
+
+        public static List<Player> GetTopTenPlayers(List<Player> players)
+        {
+            var topTenPlayers = new List<Player>();
+            players.Sort(new PlayerComparer());
+            //or do comparer * -1 in PlayerComparer.cs
+            players.Reverse();
+            int count = 0;
+            foreach(var player in players)
+            {
+                topTenPlayers.Add(player);
+                count++;
+                if(count == 10)
+                {
+                    break;
+                }
+            }
+           return topTenPlayers;
+        }
+
+        public static void SerializePlayerToFile(List<Player> players, string fileName)
+        {
+            var serializer = new JsonSerializer();
+            using (var writer = new StreamWriter(fileName))
+            using (var jsonWriter = new JsonTextWriter(writer))
+            {
+                serializer.Serialize(jsonWriter, players);
+            }
+
+        }
+
     }
 }
