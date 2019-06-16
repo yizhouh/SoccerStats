@@ -54,7 +54,7 @@ namespace SoccerStats
             }
             foreach(var i in searchResult)
             {
-                Console.WriteLine(string.Format("Sentiment Score: {3},  Date: {0:f}, HeadLine: {1}, Description: {2} \r\n", i.DatePublished, i.Headline, i.Summary, i.SentimentScore));
+                Console.WriteLine(string.Format("Sentiment Score: {3:P},  Date: {0:f}, HeadLine: {1}, Description: {2} \r\n", i.DatePublished, i.Headline, i.Summary, i.SentimentScore));
                 Console.ReadKey();
 
             }
