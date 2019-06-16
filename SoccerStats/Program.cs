@@ -39,7 +39,12 @@ namespace SoccerStats
             //Console.WriteLine(readWebContentWeb);
 
             var searchResult = WebClientReading.GetNewsForPlayers("Christiano Ronaldo");
-            Console.WriteLine(searchResult);
+            foreach(var i in searchResult)
+            {
+                Console.WriteLine(string.Format("Date: {0:f}, HeadLine: {1}, Description: {2} \r\n", i.DatePublished, i.Headline, i.Summary));
+                Console.ReadKey();
+
+            }
         }
 
 
