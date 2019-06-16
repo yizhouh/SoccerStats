@@ -48,6 +48,7 @@ namespace SoccerStats
                     {
                         result.SentimentScore = sentiment.Score;
                     }
+                    break;
 
                 }
             }
