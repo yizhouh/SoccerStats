@@ -39,9 +39,21 @@ namespace SoccerStats
             //Console.WriteLine(readWebContentWeb);
 
             var searchResult = WebClientReading.GetNewsForPlayers("Christiano Ronaldo");
+            var sentimentResponse = AzureTextAnalytics.GetSentimentResponse(searchResult);
+            foreach(var sentiment in sentimentResponse.Documents)
+            {
+                foreach(var result in searchResult)
+                {
+                    if(sentiment.Id == result.Headline)
+                    {
+                        result.SentimentScore = sentiment.Score;
+                    }
+
+                }
+            }
             foreach(var i in searchResult)
             {
-                Console.WriteLine(string.Format("Date: {0:f}, HeadLine: {1}, Description: {2} \r\n", i.DatePublished, i.Headline, i.Summary));
+                Console.WriteLine(string.Format("Sentiment Score: {3},  Date: {0:f}, HeadLine: {1}, Description: {2} \r\n", i.DatePublished, i.Headline, i.Summary, i.SentimentScore));
                 Console.ReadKey();
 
             }

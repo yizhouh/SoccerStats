@@ -8,17 +8,13 @@ namespace SoccerStats
 {
     public class WebClientReading
     {
-        // Enter a valid subscription key.
-        const string accessKey = "your API key";
-
         /*
          * If you encounter unexpected authorization errors, double-check this value
          * against the endpoint for your Bing Web search instance in your Azure
          * dashboard.
          */
          const string uriBase = "https://api.cognitive.microsoft.com/bing/v7.0/news/search";
-         //const string uriBase = "https://api.cognitive.microsoft.com/bing/v5.0/news";
-        //const string uriBase = "https://soccerstats.search.windows.net";
+
         //const string searchTerm = "Microsoft Cognitive Services";
 
 
@@ -51,7 +47,7 @@ namespace SoccerStats
             using (var webClient = new WebClient())
             {
                 var serializer = new JsonSerializer();
-                webClient.Headers.Add("Ocp-Apim-Subscription-Key", accessKey);           
+                webClient.Headers.Add("Ocp-Apim-Subscription-Key", Constants.NewsSearchAccessKey);           
                 byte[] webContent = webClient.DownloadData(uriQuery);
                 using (var stream = new MemoryStream(webContent))
                 using(var reader = new StreamReader(stream))
