@@ -36,8 +36,6 @@ namespace SoccerStats
 
                 string sentiments = Encoding.UTF8.GetString(response);
                 sentimentResponse = JsonConvert.DeserializeObject<SentimentResponse>(sentiments);
-
-
             }
             return sentimentResponse;
         }
